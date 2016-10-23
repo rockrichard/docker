@@ -10,5 +10,10 @@ docker run -td -p 8082:8081 --name nexus \
       -e NEXUS_CONTEXT=/ \
       sonatype/docker-nexus3
 
+##
+## Verify
+##      
+# docker logs -f nexus
+
 # Ref: https://github.com/sonatype/docker-nexus3  
 # Login: admin/admin123    
