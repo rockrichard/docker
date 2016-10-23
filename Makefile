@@ -39,20 +39,22 @@ dockerRunNexus:
 dockerRunDrupal01:
 	echo "----- dockerRunDrupalDev 1 -----"
 	docker run \
-		-td -p 8081:80 \
-		-e "DRUPAL_VERSION=drupal-7" \
-		-e "DRUPAL_SITE_NAME=PD2" \
+		-td -p 8091:80 \
+		-e "DRUPAL_VERSION=drupal-8" \
+		-e "DRUPAL_SITE_NAME=PD1" \
+		--name drupal_pd1 \
 		boran/drupal
 # Ref: https://github.com/Boran/docker-drupal
 
 dockerRunDrupal02:
 	echo "----- dockerRunDrupal 02 -----"
 	docker run \
-		-td -p 8090:80 \
+		-ti -p 8092:80 \
 		-e "DRUPAL_VERSION=drupal-7" \
-		-e "DRUPAL_SITE_NAME=PD3" \
+		-e "DRUPAL_SITE_NAME=PD2" \
+		-e "DRUPAL_DEBUG=true" \
 		-v ~/git/solidforward/platform/html:/var/www/html \
-		--name drupal_pd3 \
+		--name drupal_pd2 \
 		boran/drupal
 
 dockerRunDrupalDev10:
