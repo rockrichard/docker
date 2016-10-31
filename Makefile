@@ -74,7 +74,7 @@ dockerRunDrupal03:
 		-td -p 8093:80 \
 		-e "DRUPAL_VERSION=drupal-7" \
 		-e "DRUPAL_SITE_NAME=PD3" \
-		-v ~/git/solidforward/platform/html:/var/www/html \
+		-v ~/git/solidforward/website/html:/var/www/html \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
 		--name drupal_pd3 \
@@ -85,6 +85,7 @@ dockerRunDrupal04:
 	echo "----- dockerRunDrupal 04 (parceldeal.com) -----"
 	docker run \
 		-td -p 8094:80 \
+		-p 3306:3306 \
 		-e "DRUPAL_VERSION=drupal-7" \
 		-e "DRUPAL_SITE_NAME=parceldeal_clone" \
 		-v ~/git/parceldeal/html:/var/www/html \
