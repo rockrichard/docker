@@ -95,6 +95,34 @@ dockerRunDrupal04:
 		--name drupal_pd4 \
 		boran/drupal
 
+dockerRunDrupal05:
+	echo "----- dockerRunDrupal 05 (Lastest codebase) -----"
+	docker run \
+		-td -p 8095:80 \
+		-p 3305:3306 \
+		-e "DRUPAL_VERSION=drupal-7" \
+		-e "DRUPAL_SITE_NAME=PD5_pd_latest" \
+		-v /data/pd5/website/html:/var/www/html \
+		-v /data/pd5/website/database:/data/database \
+		--dns=192.168.1.1 \
+		--dns-search=lan \
+		--name drupal_pd5 \
+		boran/drupal		
+
+dockerRunDrupal06:
+	echo "----- dockerRunDrupal 06 (Lastest codebase) -----"
+	docker run \
+		-td -p 8096:80 \
+		-p 3305:3306 \
+		-e "DRUPAL_VERSION=drupal-7" \
+		-e "DRUPAL_SITE_NAME=PD6" \
+		-v /data/pd6/website/html:/var/www/html \
+		-v /data/pd6/website/database:/data/database \
+		--dns=192.168.1.1 \
+		--dns-search=lan \
+		--name drupal_pd6 \
+		boran/drupal
+		
 dockerRunDrupalDev10:
 	docker run \
 		-td -p 8083:80 \
