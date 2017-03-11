@@ -10,7 +10,7 @@ ifndef VM_HOST
 endif
 
 ifndef ENV_NAME
-    ENV_NAME=demo01
+    ENV_NAME=pd1
 endif
 
 check_defined = \
@@ -24,7 +24,10 @@ __check_defined = \
 
 all: test
 
-dockerRunCadvisor:
+## 
+## Infrastructure
+## 
+Cadvisor:
 	docker run                                      \
 	  --volume=/:/rootfs:ro                         \
 	  --volume=/var/run:/var/run:rw                 \
@@ -35,7 +38,7 @@ dockerRunCadvisor:
 	  --name=cadvisor                               \
 	  google/cadvisor:latest
 
-dockerRunNexus: 
+Nexus: 
 	echo "----- dockerRunNexus -----"
 	# sudo mkdir -f ~/disks/data/nexus
 	# sudo chown -R 200 ~/disks/data/nexus
@@ -48,22 +51,27 @@ dockerRunNexus:
 	# Ref: https://github.com/sonatype/docker-nexus3  
 	# Login: admin/admin123 	
 
-# All in one setup
-dockerRunDemo01:
+## 
+## Dev 
+## 
+dockerRunPD1:
 	echo "----- dockerRun [$(ENV_NAME)] -----"
 	docker run \
 		-td -p 8091:80 \
 		-p 3301:3306 \
 		-e "DRUPAL_VERSION=drupal-7" \
 		-e "DRUPAL_SITE_NAME=$(ENV_NAME)" \
+		-e "DRUPAL_DEBUG=true" \
 		-v /data/$(ENV_NAME)/website/html:/var/www/html \
 		-v /data/$(ENV_NAME)/website/database:/data/database \
+		-v /data/$(ENV_NAME)/website/scripts:/usr/local/bin \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
 		--name drupal_$(ENV_NAME) \
 		boran/drupal	
+	docker logs -f drupal_$(ENV_NAME) &
 # Ref: https://github.com/Boran/docker-drupal
-dockerRunDemo02:
+dockerRunPD2:
 	echo "----- dockerRun [$(ENV_NAME)] -----"
 	docker run \
 		-td -p 8092:80 \
@@ -152,7 +160,13 @@ clean:
 
 print:
 
-test:
-	echo "----- Test -----"
+test: HTTP_PORT=1111
+test: 
+	#export DB_PORT=2222
+	@echo "----- Test -----"
+	@echo "----- ENV_NAME [$(ENV_NAME)] -----"
+	@echo "----- HTTP_PORT [$(HTTP_PORT)] -----"
+	@echo "----- DB_PORT [$(DB_PORT)] -----"
+	@echo "----- DB_PORT [${DB_PORT})] -----"
 
 
