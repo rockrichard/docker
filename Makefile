@@ -9,6 +9,9 @@ ifndef VM_HOST
     VM_HOST=192.168.250
 endif
 
+ifndef ENV_NAME
+    ENV_NAME=demo01
+endif
 
 check_defined = \
     $(foreach 1,$1,$(__check_defined))
@@ -46,26 +49,32 @@ dockerRunNexus:
 	# Login: admin/admin123 	
 
 # All in one setup
-dockerRunDrupal01:
-	echo "----- dockerRunDrupalDev 1 -----"
+dockerRunDemo01:
+	echo "----- dockerRun [$(ENV_NAME)] -----"
 	docker run \
 		-td -p 8091:80 \
-		-e "DRUPAL_VERSION=drupal-8" \
-		-e "DRUPAL_SITE_NAME=PD1" \
+		-p 3301:3306 \
+		-e "DRUPAL_VERSION=drupal-7" \
+		-e "DRUPAL_SITE_NAME=$(ENV_NAME)" \
+		-v /data/$(ENV_NAME)/website/html:/var/www/html \
+		-v /data/$(ENV_NAME)/website/database:/data/database \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
-		--name drupal_pd1 \
-		boran/drupal
+		--name drupal_$(ENV_NAME) \
+		boran/drupal	
 # Ref: https://github.com/Boran/docker-drupal
-dockerRunDrupal02:
-	echo "----- dockerRunDrupalDev 2 -----"
+dockerRunDemo02:
+	echo "----- dockerRun [$(ENV_NAME)] -----"
 	docker run \
 		-td -p 8092:80 \
+		-p 3302:3306 \
 		-e "DRUPAL_VERSION=drupal-7" \
-		-e "DRUPAL_SITE_NAME=PD2" \
+		-e "DRUPAL_SITE_NAME=$(ENV_NAME)" \
+		-v /data/$(ENV_NAME)/website/html:/var/www/html \
+		-v /data/$(ENV_NAME)/website/database:/data/database \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
-		--name drupal_pd2 \
+		--name drupal_$(ENV_NAME) \
 		boran/drupal		
 
 dockerRunDrupal03:
@@ -113,7 +122,7 @@ dockerRunDrupal06:
 	echo "----- dockerRunDrupal 06 (Lastest codebase) -----"
 	docker run \
 		-td -p 8096:80 \
-		-p 3305:3306 \
+		-p 3307:3306 \
 		-e "DRUPAL_VERSION=drupal-7" \
 		-e "DRUPAL_SITE_NAME=PD6" \
 		-v /data/pd6/website/html:/var/www/html \
@@ -122,7 +131,7 @@ dockerRunDrupal06:
 		--dns-search=lan \
 		--name drupal_pd6 \
 		boran/drupal
-		
+
 dockerRunDrupalDev10:
 	docker run \
 		-td -p 8083:80 \
