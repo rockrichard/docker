@@ -64,7 +64,7 @@ dockerRunPD1:
 		-e "DRUPAL_DEBUG=true" \
 		-v /data/$(ENV_NAME)/website/html:/var/www/html \
 		-v /data/$(ENV_NAME)/website/database:/data/database \
-		-v /data/$(ENV_NAME)/website/scripts:/usr/local/bin \
+		-v /data/$(ENV_NAME)/website/scripts:/opt/sf/bin \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
 		--name drupal_$(ENV_NAME) \
@@ -80,11 +80,12 @@ dockerRunPD2:
 		-e "DRUPAL_SITE_NAME=$(ENV_NAME)" \
 		-v /data/$(ENV_NAME)/website/html:/var/www/html \
 		-v /data/$(ENV_NAME)/website/database:/data/database \
+		-v /data/$(ENV_NAME)/website:/opt/sf/website \
 		--dns=192.168.1.1 \
 		--dns-search=lan \
 		--name drupal_$(ENV_NAME) \
-		boran/drupal		
-
+		boran/drupal
+	docker logs -f drupal_$(ENV_NAME) &
 dockerRunDrupal03:
 	echo "----- dockerRunDrupal 03 -----"
 	docker run \
